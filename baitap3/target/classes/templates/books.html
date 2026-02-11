@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách sách</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .btn-add {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .btn-add:hover {
+            background: #45a049;
+        }
+        .btn-home {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #2196F3;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .btn-home:hover {
+            background: #0b7dda;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th {
+            background: #333;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        tr:hover {
+            background: #f9f9f9;
+        }
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+        .btn-edit {
+            padding: 6px 12px;
+            background: #FFC107;
+            color: black;
+            text-decoration: none;
+            border-radius: 3px;
+            transition: background 0.3s;
+            font-size: 0.9em;
+        }
+        .btn-edit:hover {
+            background: #e0a800;
+        }
+        .btn-delete {
+            padding: 6px 12px;
+            background: #f44336;
+            color: white;
+            text-decoration: none;
+            border-radius: 3px;
+            transition: background 0.3s;
+            font-size: 0.9em;
+        }
+        .btn-delete:hover {
+            background: #da190b;
+        }
+        .empty-message {
+            text-align: center;
+            color: #999;
+            padding: 40px;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>📚 Danh sách Sách</h1>
+        <div>
+            <a href="/" class="btn-home">Trang chủ</a>
+            <a th:href="@{/books/add}" class="btn-add">+ Thêm sách mới</a>
+        </div>
+    </div>
+
+    <div th:if="${books.isEmpty()}" class="empty-message">
+        Chưa có sách nào. <a th:href="@{/books/add}" style="color: #2196F3; text-decoration: underline;">Thêm sách mới</a>
+    </div>
+
+    <table th:if="${!books.isEmpty()}">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tiêu đề</th>
+                <th>Tác giả</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="book : ${books}">
+                <td th:text="${book.id}"></td>
+                <td th:text="${book.title}"></td>
+                <td th:text="${book.author}"></td>
+                <td>
+                    <div class="actions">
+                        <a th:href="@{/books/edit/{id}(id=${book.id})}" class="btn-edit">✏️ Sửa</a>
+                        <a th:href="@{/books/delete/{id}(id=${book.id})}"
+                           onclick="return confirm('Bạn có chắc muốn xóa sách này?')"
+                           class="btn-delete">🗑️ Xóa</a>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
